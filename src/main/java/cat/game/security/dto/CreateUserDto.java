@@ -33,16 +33,16 @@ public class CreateUserDto {
 	public CreateUserDto(@NotBlank(message = "username is mandatory") String username,
 			@NotBlank(message = "password is mandatory") String password,
 			@NotEmpty(message = "roles are mandatory") List<String> roles) throws Exception {
-		if(username == null) {
-			throw new Exception("username is mandatory");
-		}
-		if(password == null) {
-			throw new Exception("password is mandatory");
-		}
-		if(roles.isEmpty()) {
-			throw new Exception("roles is mandatory");
-		}
-		
+//		if(username == null) {
+//			throw new Exception("username is mandatory");
+//		}
+//		if(password == null) {
+//			throw new Exception("password is mandatory");
+//		}
+//		if(roles.isEmpty()) {
+//			throw new Exception("roles is mandatory");
+//		}
+//		
 		this.username = username;
 		this.password = password;
 		this.roles = roles;

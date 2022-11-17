@@ -3,8 +3,7 @@ package cat.game.security.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,6 +20,8 @@ import lombok.Setter;
 @Setter
 @Document(collection = "users")
 public class Usuario {
+	@Id
+	private int id;
 	@Indexed(unique = true)
 	private String username;
 	private String password;
@@ -28,7 +29,8 @@ public class Usuario {
 	private String date;
 	private ArrayList<Partida> partidas;
 	private List<Rol> roles;
-	public Usuario(String username, String password, List<Rol> roles) {
+	public Usuario(int id, String username, String password, List<Rol> roles) {
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.roles = roles;

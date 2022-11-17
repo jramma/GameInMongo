@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import cat.game.security.service.UserDetailService;
 
 
+@Component
 public class JwtFilter extends OncePerRequestFilter {
 	private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
@@ -43,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			}
 		} catch (UsernameNotFoundException e) {
-			logger.error(e.toString());
+			logger.error("Filter blocked request");
 		}
 		filterChain.doFilter(request, response);
 	}
@@ -51,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	private String getToken(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
 		if (header != null && header.startsWith("Bearer ")) {
-			header.replace("Bearer ", "");
+			header = header.replace("Bearer ", "");
 		} else {
 			header = null;
 		}

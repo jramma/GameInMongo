@@ -15,11 +15,11 @@ public class UserDetailService implements UserDetailsService {
 	UserRepository repository;
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = repository.findByUsername(username);
+		Usuario usuario = repository.findByUsername(username).get();
 		if(usuario != null)
 			return null;
 		
-		return UsuarioDetails.build(usuario);
+		return UsuarioPrincipal.build(usuario);
 	}
 
 }

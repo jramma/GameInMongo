@@ -3,6 +3,7 @@ package cat.game.security.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import cat.game.security.domain.Usuario;
 import cat.game.security.dto.CreateUserDto;
 import cat.game.security.dto.JwtTokenDto;
 import cat.game.security.dto.LoginUserDto;
+import cat.game.security.dto.Mensaje;
 import cat.game.security.service.UserService;
 
 @RestController
@@ -23,9 +25,9 @@ public class AuthController {
 	UserService userService;
 	
 	@PostMapping("/add")
-	public ResponseEntity<?> create(@Valid @RequestBody CreateUserDto dto) throws Exception{
+	public ResponseEntity<Mensaje> create(@Valid @RequestBody CreateUserDto dto) throws Exception{
 			Usuario usuario = userService.create(dto);
-		return ResponseEntity.ok("Usuario: "+ usuario.getUsername()+" creado");
+		return ResponseEntity.ok(new Mensaje(HttpStatus.OK, "Usuario: "+ usuario.getUsername()+" creado"));
 		
 	}
 	@PostMapping("/login")

@@ -15,52 +15,56 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioDetails implements UserDetails {
+public class UsuarioPrincipal implements UserDetails {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String username;
 	private String password;
-	private Collection <?extends GrantedAuthority>authorities;
-	
+	private Collection<? extends GrantedAuthority> authorities;
+
 	// no construye, devuelve un details de un usuario
-	public static UsuarioDetails build(Usuario usuario) {
-		Collection<GrantedAuthority> authorities=
-				usuario.getRoles().stream().map(rol ->new SimpleGrantedAuthority(rol.name()))
-				.collect(Collectors.toList());
-		return new UsuarioDetails(usuario.getUsername(),usuario.getPassword(), authorities);
-	
+	public static UsuarioPrincipal build(Usuario usuario) {
+		Collection<GrantedAuthority> authorities = usuario.getRoles().stream()
+				.map(rol -> new SimpleGrantedAuthority(rol.name())).collect(Collectors.toList());
+		return new UsuarioPrincipal(usuario.getUsername(), usuario.getPassword(), authorities);
+
 	}
-	
-	
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
+
 	@Override
 	public String getPassword() {
 		return password;
 	}
+
 	@Override
 	public String getUsername() {
 		return username;
 	}
+
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
+
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
+
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
+
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 }

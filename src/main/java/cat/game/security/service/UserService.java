@@ -1,5 +1,6 @@
 package cat.game.security.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,15 +40,22 @@ public class UserService {
 	}
 
 	public Usuario create(CreateUserDto dto) throws Exception {
-		String password = passwordEncoder.encode(dto.getPassword());
-
+		// Comprueba si el usuario ya existe
 		if (userRepo.existsByUsername(dto.getUsername())) {
 			throw new Exception("El usuario ya existe");
 		}
+		int id = autoIncrement();
+		String password = passwordEncoder.encode(dto.getPassword());
 		List<Rol> roles = dto.getRoles().stream().map(rol -> Rol.valueOf(rol)).collect(Collectors.toList());
-		Usuario user = new Usuario(dto.getUsername(), password, roles);
+		
+		Usuario user = new Usuario(id, dto.getUsername(), password, roles);
+		
 		return userRepo.save(user);
 
+	}
+	public int autoIncrement() {
+		List<Usuario> users = userRepo.findAll();
+		return users.isEmpty()? 1 : users.stream().max(Comparator.comparing(Usuario::getId)).get().getId()+1;
 	}
 
 }
