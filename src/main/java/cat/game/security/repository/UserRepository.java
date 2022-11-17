@@ -8,4 +8,5 @@ import cat.game.security.domain.Usuario;
 @Repository
 public interface UserRepository extends MongoRepository<Usuario, Integer>{
 	boolean existsByUsername(String username);
+	Usuario findByUsername(String username);
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cat.game.security.domain.Usuario;
 import cat.game.security.dto.CreateUserDto;
+import cat.game.security.dto.JwtTokenDto;
+import cat.game.security.dto.LoginUserDto;
 import cat.game.security.service.UserService;
 
 @RestController
@@ -21,9 +23,15 @@ public class AuthController {
 	UserService userService;
 	
 	@PostMapping("/add")
-	public ResponseEntity<?> create (@Valid @RequestBody CreateUserDto dto) throws Exception{
+	public ResponseEntity<?> create(@Valid @RequestBody CreateUserDto dto) throws Exception{
 			Usuario usuario = userService.create(dto);
-		return ResponseEntity.ok("Usuario"+ usuario.getUsername()+" creado");
+		return ResponseEntity.ok("Usuario: "+ usuario.getUsername()+" creado");
+		
+	}
+	@PostMapping("/login")
+	public ResponseEntity<JwtTokenDto> login(@Valid @RequestBody LoginUserDto dto) throws Exception{
+		JwtTokenDto jwtTokenDto = userService.login(dto);		
+		return ResponseEntity.ok(jwtTokenDto);
 		
 	}
 }
