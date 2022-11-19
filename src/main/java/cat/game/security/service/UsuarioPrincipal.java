@@ -27,9 +27,12 @@ public class UsuarioPrincipal implements UserDetails {
 
 	// no construye, devuelve un details de un usuario
 	public static UsuarioPrincipal build(Usuario usuario) {
-		Collection<GrantedAuthority> authorities = usuario.getRoles().stream()
-				.map(rol -> new SimpleGrantedAuthority(rol.name())).collect(Collectors.toList());
-		return new UsuarioPrincipal(usuario.getUsername(), usuario.getPassword(), authorities);
+		Collection<GrantedAuthority> authorities = 
+				usuario.getRoles().stream()
+				.map(rol -> new SimpleGrantedAuthority(rol.name()))
+				.collect(Collectors.toList());
+		return new UsuarioPrincipal(usuario.getUsername(), 
+				usuario.getPassword(), authorities);
 
 	}
 

@@ -32,33 +32,37 @@ public class UserService {
 	@Autowired
 	AuthenticationManager authenticationManager;
 
+	public Usuario create(CreateUserDto dto) throws AttributeException {
+		if (userRepo.existsByUsername(dto.getUsername()))
+			throw new AttributeException("username already in use");
+
+		return userRepo.save(mapUserFromDto(dto));
+	}
+
 	public JwtTokenDto login(LoginUserDto dto) {
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(
-						dto.getUsername(), dto.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String token = jwtProvider.generateToken(authentication);
 		return new JwtTokenDto(token);
 	}
 
-	public Usuario create(CreateUserDto dto) throws AttributeException {
-		// Comprueba si el usuario ya existe
-		if (userRepo.existsByUsername(dto.getUsername())) {
-			throw new AttributeException("El usuario ya existe");
-		}
-		int id = autoIncrement();
+	private Usuario mapUserFromDto(CreateUserDto dto) {
+		int id = autoIncrement(userRepo.findAll());
 		String password = passwordEncoder.encode(dto.getPassword());
 		List<Rol> roles = dto.getRoles().stream().map(rol -> Rol.valueOf(rol)).collect(Collectors.toList());
-
-		Usuario user = new Usuario(id, dto.getUsername(), password, roles);
-
-		return userRepo.save(user);
-
+		return new Usuario(id, dto.getUsername(), password, roles);
 	}
 
-	public int autoIncrement() {
-		List<Usuario> users = userRepo.findAll();
-		return users.isEmpty() ? 1 : users.stream().max(Comparator.comparing(Usuario::getId)).get().getId() + 1;
+
+	public int autoIncrement(List<Usuario> list) {
+		int id;
+		if (list.isEmpty()) {
+			id = 1;
+		} else {
+			id = list.stream().max(Comparator.comparing(Usuario::getId)).get().getId() + 1;
+		}
+		return id;
 	}
 
 }

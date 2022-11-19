@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import cat.game.security.service.UserDetailService;
+import cat.game.security.service.UserDetailServiceImp;
 
 /**
  * Se ejecuta por cada petición, comprueba que sea valido el token
@@ -33,36 +33,30 @@ public class JwtFilter extends OncePerRequestFilter {
 	JwtProvider jwtProvider;
 
 	@Autowired
-	UserDetailService userDetailsService;
+	UserDetailServiceImp userDetailsServiceImpl;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		String token = getToken(request);
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
+        String token = getToken(req);
+        try {
+            if(token != null && jwtProvider.validateToken(token)) {
+                String username = jwtProvider.getUsernameFromToken(token);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+        } catch (UsernameNotFoundException e) {
+            logger.error("filter blocked request");
+        }
+        chain.doFilter(req, res);
+    }
 
-		try {
-			if (token != null && jwtProvider.validateToken(token)) {
-				String username = jwtProvider.getUsernameFromToken(token);
-				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails.getUsername(), null, userDetails.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-			}
-		} catch (UsernameNotFoundException e) {
-			logger.error("Filter blocked request");
-		}
-		filterChain.doFilter(request, response);
-	}
-
-	private String getToken(HttpServletRequest request) {
-		String header = request.getHeader("Authorization");
-		if (header != null && header.startsWith("Bearer ")) {
-			header = header.replace("Bearer ", "");
-		} else {
-			header = null;
-		}
-
-		return header;
-	}
+    private String getToken(HttpServletRequest req) {
+        String header = req.getHeader("Authorization");
+        if(header != null && header.startsWith("Bearer "))
+            return header.replace("Bearer ", "");
+        return null;
+    }
 
 }

@@ -14,14 +14,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import cat.game.security.jwt.JwtEntryPoint;
 import cat.game.security.jwt.JwtFilter;
-import cat.game.security.service.UserDetailService;
+import cat.game.security.service.UserDetailServiceImp;
 
 @Configuration
 @EnableWebSecurity
 public class MainSecurityConfig {
 
 	@Autowired
-	UserDetailService userDetailService;
+	UserDetailServiceImp userDetailService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;

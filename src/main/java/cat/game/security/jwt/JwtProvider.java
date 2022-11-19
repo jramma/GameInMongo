@@ -47,12 +47,14 @@ public class JwtProvider {
     }
 
     public String getUsernameFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(getKey(secret)).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(getKey(secret))
+        		.build().parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateToken(String token){
         try {
-            Jwts.parserBuilder().setSigningKey(getKey(secret)).build().parseClaimsJws(token).getBody();
+            Jwts.parserBuilder().setSigningKey(getKey(secret))
+            .build().parseClaimsJws(token).getBody();
             return true;
         }catch (MalformedJwtException e){
             logger.error("token mal formado");
