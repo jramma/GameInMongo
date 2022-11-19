@@ -19,9 +19,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import cat.game.security.service.UserDetailService;
 
-
+/**
+ * Se ejecuta por cada petición, comprueba que sea valido el token
+ * Utiliza el provider para validar que sea valido
+ * Si es valido permite acceso al recurso si no lanza una excepción
+ */
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+	
 	private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
 	@Autowired

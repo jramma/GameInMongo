@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
 import org.springframework.stereotype.Component;
 import cat.game.security.service.UsuarioPrincipal;
 
@@ -21,10 +20,13 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-
+/**
+ * Clase que genera el token y valida que este bien formado y no este expirado
+ */
 @Component
 public class JwtProvider {
-    private static final  Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    
+	private static final  Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
     @Value("${jwt.secret}")
     private String secret;
@@ -39,7 +41,8 @@ public class JwtProvider {
         		.setSubject(usuarioPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expiration * 1000))
-                .claim("roles",getRoles(usuarioPrincipal) )
+                .claim("roles",getRoles(usuarioPrincipal))
+                .claim("it ", "academy")
                 .compact();
     }
 
@@ -67,7 +70,9 @@ public class JwtProvider {
         return false;
     }
     private List<String> getRoles(UsuarioPrincipal user){
-    	return user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+    	return user.getAuthorities().stream()
+    			.map(GrantedAuthority::getAuthority)
+    			.collect(Collectors.toList());
     }
     private Key getKey(String secret) {
     	byte [] secretBytes = Decoders.BASE64URL.decode(secret);

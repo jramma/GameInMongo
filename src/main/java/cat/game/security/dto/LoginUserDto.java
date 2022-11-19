@@ -2,7 +2,6 @@ package cat.game.security.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.data.mongodb.core.index.Indexed;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class LoginUserDto {
 	@NotBlank(message = "username is mandatory")
-	@Indexed(unique = true)
+	//@Indexed(unique = true)
 	private String username;
 	@NotBlank(message = "password is mandatory")
 	private String password;

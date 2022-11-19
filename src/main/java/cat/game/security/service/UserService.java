@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import cat.game.global.exceptions.AttributeException;
 import cat.game.security.domain.Usuario;
 import cat.game.security.dto.*;
 import cat.game.security.jwt.JwtProvider;
@@ -33,29 +34,31 @@ public class UserService {
 
 	public JwtTokenDto login(LoginUserDto dto) {
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(
+						dto.getUsername(), dto.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String token = jwtProvider.generateToken(authentication);
 		return new JwtTokenDto(token);
 	}
 
-	public Usuario create(CreateUserDto dto) throws Exception {
+	public Usuario create(CreateUserDto dto) throws AttributeException {
 		// Comprueba si el usuario ya existe
 		if (userRepo.existsByUsername(dto.getUsername())) {
-			throw new Exception("El usuario ya existe");
+			throw new AttributeException("El usuario ya existe");
 		}
 		int id = autoIncrement();
 		String password = passwordEncoder.encode(dto.getPassword());
 		List<Rol> roles = dto.getRoles().stream().map(rol -> Rol.valueOf(rol)).collect(Collectors.toList());
-		
+
 		Usuario user = new Usuario(id, dto.getUsername(), password, roles);
-		
+
 		return userRepo.save(user);
 
 	}
+
 	public int autoIncrement() {
 		List<Usuario> users = userRepo.findAll();
-		return users.isEmpty()? 1 : users.stream().max(Comparator.comparing(Usuario::getId)).get().getId()+1;
+		return users.isEmpty() ? 1 : users.stream().max(Comparator.comparing(Usuario::getId)).get().getId() + 1;
 	}
 
 }

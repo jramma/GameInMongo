@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CreateUserDto {
 	@NotBlank(message = "username is mandatory")
-	@Indexed(unique = true)
+	//@Indexed(unique = true)
 	private String username;
 	@NotBlank(message = "password is mandatory")
 	private String password;
