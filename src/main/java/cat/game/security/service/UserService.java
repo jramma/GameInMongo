@@ -13,7 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import cat.game.domain.Partida;
 import cat.game.global.exceptions.AttributeException;
+import cat.game.repository.PartidaRepository;
 import cat.game.security.domain.Usuario;
 import cat.game.security.dto.*;
 import cat.game.security.jwt.JwtProvider;
@@ -21,8 +23,12 @@ import cat.game.security.repository.UserRepository;
 
 @Service
 public class UserService {
+	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	PartidaRepository partidaRepository;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -73,5 +79,14 @@ public class UserService {
 	}
 	public List<Usuario> obtenerTodos(){
 		return userRepo.findAll();
+	}
+	public List<Partida> obtenerPartidasTotales(){
+		return partidaRepository.findAll();
+	}
+	public void guardarPartida(Partida partida){
+		 partidaRepository.save(partida);
+	}
+	public Usuario buscarUsuario(int id) {
+		return userRepo.findById(id).get();
 	}
 }
