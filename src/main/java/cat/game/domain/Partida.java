@@ -16,6 +16,7 @@ import lombok.Setter;
 @Document
 public class Partida implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String usuario;
 	private int dado1;
 	private int dado2;

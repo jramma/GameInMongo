@@ -2,6 +2,7 @@ package cat.game.security.service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,13 @@ public class UserService {
 		}
 		return id;
 	}
-
+	public Optional<Usuario> buscarUsuario(String nombre) {
+		return userRepo.findByUsername(nombre);
+	}
+	public Usuario guardarUsuario(Usuario usuario) {
+		return userRepo.save(usuario);
+	}
+	public List<Usuario> obtenerTodos(){
+		return userRepo.findAll();
+	}
 }
