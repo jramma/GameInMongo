@@ -25,7 +25,7 @@ public class Controller {
 	@Autowired
 	UserService userService;
 
-	@PutMapping("/players")
+	@PutMapping("/editProfile")
 	public Usuario modificarUsuario(@RequestBody String nombre, Authentication auth) {
 		Usuario usuario = userService.buscarUsuario(auth.getName()).get();
 		usuario.setUsername(nombre);
