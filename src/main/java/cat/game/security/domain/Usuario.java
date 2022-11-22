@@ -22,7 +22,6 @@ import lombok.Setter;
 public class Usuario {
 	@Id
 	private int id;
-	// @Indexed(unique = true)
 	private String username;
 	private String password;
 	private double ranquing;

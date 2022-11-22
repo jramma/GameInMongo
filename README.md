@@ -53,8 +53,18 @@ Elimina las partidas del usuario que este logueado.
 
 La estructura de los paquetes es la siguiente:
 
-- Controller: aporta los endpoints con la inyección del repositorio de compañías.
-- Domain: aquí se encuentra la clase Company que refiere a la colección de compañías. Además tengo 3 DTO que nos sirven para ejecutar el tercer endpoint.
-- Repository: interfaz con MongoRepository importado y implementado. Nos sirve para comunicar el controller con la colección "companies".
-- Config: contiene un swagger con el que puedes hacer el Test de los diferentes GET del Controller sin necesidad de Postman y tienes un poco de información de más sobre el proyecto.
+- Controller: aporta los endpoints con la inyección del servicio de usuarios.
+- Domain: aquí se encuentra la clase Partida.
+- Exception: excepciones.
+- Utilities: paquete con utilidades, en este caso un comparador de ranquings.
+
+- Security: dentro del paquete security tenemos todos los paquetes que se relacionan con seguridad.
+- Config: dentro tienes las clases que configuran los beans y el filtro de seguridad.
+- Controller: controlador de seguridad(logueo y creación de usuarios).
+- Dto: contiene todos los DTOs; creción de usuario, jwtoken, usuarioLogueo, mensajes y roles de usuario.
+- JWT: contiene las clases que relacionadas con los json web token.
+- Repository: en este caso solo contiene la clase usuario.
+- Service: tiene los servicios. Podrían estar fuera del paquete security pero en este caso tienen tanto la encriptación como implementación de JWT, así que los he dejado ahí.
+
+
 
