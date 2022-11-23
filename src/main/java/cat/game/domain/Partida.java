@@ -2,6 +2,7 @@ package cat.game.domain;
 
 import java.io.Serializable;
 
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class Partida implements Serializable {
 	private String resultado;
 
 	public Partida(String usuario) {
+	
 		String resultado1;
 		this.dado1 = (int) (Math.random() * 6 + 1);
 		this.dado2 = (int) (Math.random() * 6 + 1);

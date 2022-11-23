@@ -48,8 +48,8 @@ public class Controller {
 		Usuario usuario = userService.buscarUsuario(auth.getName()).get();
 		ArrayList<Partida> partidas = new ArrayList<>();
 		usuario.setPartidas(partidas);
+		userService.eliminarPartidas(usuario);		
 		return usuario;
-
 	}
 
 	@GetMapping("/getAll")

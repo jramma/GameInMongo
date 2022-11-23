@@ -38,6 +38,8 @@ public class UserService {
 
 	@Autowired
 	AuthenticationManager authenticationManager;
+	
+	
 
 	public Usuario create(CreateUserDto dto) throws AttributeException {
 		if (userRepo.existsByUsername(dto.getUsername()))
@@ -83,10 +85,17 @@ public class UserService {
 	public List<Partida> obtenerPartidasTotales(){
 		return partidaRepository.findAll();
 	}
-	public void guardarPartida(Partida partida){
-		 partidaRepository.save(partida);
+	public Partida guardarPartida(Partida partida){
+		return partidaRepository.save(partida);
 	}
 	public Usuario buscarUsuario(int id) {
 		return userRepo.findById(id).get();
+		
+	}
+
+	public void eliminarPartidas(Usuario usuario) {
+		String username = usuario.getUsername();
+		partidaRepository.deleteByUsuario(username);
+		userRepo.save(usuario);
 	}
 }
