@@ -17,9 +17,6 @@ public class LoginUserDto {
 	//@Indexed(unique = true)
 	private String username;
 	@NotBlank(message = "password is mandatory")
-	private String password;
-	
-	
-	
+	private String password;	
 	
 }

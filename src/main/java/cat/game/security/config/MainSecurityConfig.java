@@ -49,36 +49,4 @@ public class MainSecurityConfig {
 
 	}
 
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder);
-//	}
-//
-//	@Bean
-//	@Override
-//	public AuthenticationManager authenticationManagerBean() throws Exception {
-//		return super.authenticationManagerBean();
-//	}
-//
-//	@Override
-//	protected AuthenticationManager authenticationManager() throws Exception {
-//		return super.authenticationManager();
-//	}
-//
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http.cors().and().csrf().disable()
-//		.authorizeRequests().antMatchers("/auth/**").permitAll()
-//		.anyRequest().authenticated()
-//		.and()
-//		.exceptionHandling()
-//		.authenticationEntryPoint(jwtEntryPoint)
-//		.and()
-//		.sessionManagement()
-//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//		
-//		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//	}
-//	
-
 }
